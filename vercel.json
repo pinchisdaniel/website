@@ -1,1 +1,20 @@
-{\n  \"version\": 2,\n  \"builds\": [\n    {\n      \"src\": \"**\",\n      \"use\": \"@vercel/static\"\n    }\n  ],\n  \"routes\": [\n    {\n      \"src\": \"/(.*)\",\n      \"dest\": \"/$1\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"source\": \"/(.*)\\.(png|jpg|jpeg|gif|webp|ico|svg)\",\n      \"headers\": [\n        {\n          \"key\": \"Cache-Control\",\n          \"value\": \"public, max-age=31536000, immutable\"\n        }\n      ]\n    }\n  ]\n}
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)\.(png|jpg|jpeg|gif|webp|ico|svg|mp4|mov|avi|webm)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

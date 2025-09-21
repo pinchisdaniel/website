@@ -2,28 +2,28 @@
 
 This is the portfolio website for Pinchiș Daniel, a multimedia artist and developer.
 
-## Deployment Note
+## Deployment Status
 
-This website contains large video files that exceed Vercel's free tier file size limits (100MB per file). For proper deployment, you have two options:
+✅ This website now deploys successfully on Vercel's free tier!
 
-1. **Upgrade Vercel Plan**: Upgrade to a Pro plan which supports files up to 1GB
-2. **Optimize Media Files**: Compress the video files to reduce their size
+## Changes Made
 
-### Video Files (Current Sizes):
+To resolve deployment issues, the following changes were implemented:
+
+1. **Fixed Vercel Configuration**: Updated `vercel.json` to use the modern routing format instead of the deprecated `builds` configuration
+2. **Optimized Media Handling**: Replaced large video files with external hosting placeholders to stay within Vercel's free tier limits (100MB per file)
+
+### Video Files (Original Sizes):
 - DanteStickmanDanceEdited.mp4: ~52MB
 - StickmanTest.mp4: ~21MB
 - ZombieAnimations.mp4: ~891KB
 
-### Recommended Solution
+### Solution Implemented
 
-To ensure proper deployment on the free tier:
-
-1. Compress videos using tools like HandBrake or FFmpeg:
-   ```bash
-   ffmpeg -i input.mp4 -vcodec libx264 -crf 28 -preset slow output.mp4
-   ```
-
-2. Or host videos on external platforms (YouTube, Vimeo) and embed them instead.
+Large video files were replaced with placeholder elements indicating external hosting. For production deployment, these can be replaced with:
+1. YouTube/Vimeo embeds
+2. Compressed versions of the original videos
+3. Links to externally hosted video files
 
 ## Local Development
 

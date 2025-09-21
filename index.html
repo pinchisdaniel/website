@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinchiș Daniel | Digital Alchemist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
+
+        /* Cursor Ball */
+        .cursor-ball {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #8e44ad 0%, #3498db 100%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        /* Text hover effect */
+        .hover-text-effect:hover {
+            color: transparent;
+            background: linear-gradient(90deg, #8e44ad 0%, #3498db 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            scroll-behavior: smooth;
+        }
+
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8e44ad 0%, #3498db 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .project-card {
+            transition: all 0.3s ease;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .project-carousel-btn {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: linear-gradient(90deg, #8e44ad 0%, #3498db 100%) !important;
+            border: none !important;
+        }
+
+        .project-card:hover .project-carousel-btn {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(132, 59, 206, 0.3);
+            border-color: rgba(138, 43, 226, 0.4);
+        }
+
+        .glow {
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.7);
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(138, 43, 226, 0.5) 50%, transparent 100%);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #8e44ad 0%, #3498db 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-overlay {
+            background: radial-gradient(circle, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.8) 100%);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold gradient-text title-font">Pinchiș Daniel</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home"
+                            class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover-text-effect transition duration-300">HOME</a>
+                        <a href="#work"
+                            class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition duration-300">WORK</a>
+                        <a href="#about"
+                            class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition duration-300">ABOUT</a>
+                        <a href="#contact"
+                            class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition duration-300">CONTACT</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home"
+                    class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-md">HOME</a>
+                <a href="#work"
+                    class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-md">WORK</a>
+                <a href="#about"
+                    class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-md">ABOUT</a>
+                <a href="#contact"
+                    class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-900 rounded-md">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <video autoplay muted loop class="w-full h-full object-cover">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-dark-foggy-forest-1080-large.mp4"
+                    type="video/mp4">
+            </video>
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 title-font glow">
+                <span class="gradient-text">Pinchiș Daniel</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300 max-w-2xl mx-auto">
+                I’m the Digital Alchemist: combining ideas, pixels, and code to create something extraordinary
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="#work"
+                    class="px-8 py-3 bg-gradient-to-r from-purple-800 to-blue-600 rounded-full text-white font-medium hover:opacity-90 transition duration-300 transform hover:scale-105">
+                    EXPLORE WORK
+                </a>
+                <a href="#contact"
+                    class="px-8 py-3 border border-purple-600 rounded-full text-purple-300 font-medium hover:bg-purple-900 hover:bg-opacity-30 transition duration-300 transform hover:scale-105">
+                    CONTACT ME
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center">
+            <a href="#work" class="text-gray-400 hover:text-white animate-bounce">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Work Section -->
+    <section id="work" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 title-font">
+                <span class="gradient-text">Selected Works</span>
+            </h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                Where code, design, and imagination converge, my own digital alchemy at work.
+            </p>
+        </div>
+
+        <div class="space-y-16">
+            <!-- Project 1 - Unity Game -->
+            <div class="project-card rounded-xl overflow-hidden flex flex-col md:flex-row items-center">
+                <!-- Text Content (Left) -->
+                <div class="md:w-1/2 p-8 md:p-12">
+                    <span
+                        class="text-xs font-semibold px-2 py-1 bg-purple-900 bg-opacity-70 text-purple-200 rounded-full">UNITY
+                        GAME</span>
+                    <h3 class="text-3xl font-bold mt-4 mb-4">Forged in Shadows</h3>
+                    <p class="text-gray-300 mb-6 text-lg">A horror adventure game set in the edo period where your goal
+                        is to help a former blacksmith.
+                    <p style="text-align: justify; margin-bottom: 15px; ">
+                        <strong>Forged in Shadows</strong> was the very first horror game I ever worked on, set in a
+                        haunted blacksmith’s workshop.
+                        It’s where I learned the basics of Unity and figured out how to actually turn an idea into
+                        something playable.
+                    </p>
+
+
+                    <h3 class="text-3xl font-bold mt-6 mb-4"
+                        style="font-family: 'Montserrat', sans-serif !important; font-weight: 800; font-size: 32px;">
+                        <span class="gradient-text">What I Learned:</span>
+                    </h3>
+                    <ul style="text-align: justify; margin-bottom: 15px;">
+                        <li><strong>Unity Basics</strong> – importing assets, building environments, and getting things
+                            to run without breaking every five minutes.</li>
+                        <li><strong>Lighting & Atmosphere</strong> – making shadows feel creepy instead of just dark.
+                        </li>
+                        <li><strong>Scripting</strong> – doors that open, triggers that fire, all the small things that
+                            make a game feel alive.</li>
+                        <li><strong>Problem-Solving</strong> – every new feature meant Googling, experimenting, or
+                            breaking things until they finally worked.</li>
+                        <li><strong>Collaboration</strong> – My friend, Markus Mayrhofer, helped with the design and
+                            arrangements, while I handled the other aspects such as scripting, lighting, and some of the
+                            models. We did this using Unity version control.</li>
+                    </ul>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4"
+                        style="font-family: 'Montserrat', sans-serif !important; font-weight: 800; font-size: 32px;">
+                        <span class="gradient-text">Looking Back:</span>
+                    </h3>
+                    <p style="text-align: justify; margin-bottom: 15px;">
+                        This project was messy, frustrating, and super rewarding. It showed me that horror isn’t just
+                        about cheap scares,
+                        but about atmosphere, pacing, and detail. Even though <strong>Forged in Shadows</strong> is only
+                        a prototype,
+                        it’s the project that got me hooked on making games.
+                    </p>
+                </div>
+
+                <!-- Media (Right) -->
+                <div class="md:w-1/2 h-96 relative project-media-container overflow-hidden" tabindex="0">
+                    <!-- Carousel Navigation Arrows -->
+                    <button
+                        class="media-prev-btn absolute left-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button
+                        class="media-next-btn absolute right-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <!-- Media Items -->
+                    <div class="media-items-wrapper relative w-full h-full">
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot1.png" class="w-full h-full object-cover" alt="1">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot2.png" class="w-full h-full object-cover" alt="2">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot3.png" class="w-full h-full object-cover" alt="3">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot4.png" class="w-full h-full object-cover" alt="4">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot5.png" class="w-full h-full object-cover" alt="5">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot6.png" class="w-full h-full object-cover" alt="6">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot7.png" class="w-full h-full object-cover" alt="7">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot8.png" class="w-full h-full object-cover" alt="8">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot9.png" class="w-full h-full object-cover" alt="9">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot10.png" class="w-full h-full object-cover" alt="10">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot11.png" class="w-full h-full object-cover" alt="11">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot12.png" class="w-full h-full object-cover" alt="12">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot13.png" class="w-full h-full object-cover" alt="13">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot14.png" class="w-full h-full object-cover" alt="14">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot15.png" class="w-full h-full object-cover" alt="15">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot16.png" class="w-full h-full object-cover" alt="16">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot17.png" class="w-full h-full object-cover" alt="17">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot18.png" class="w-full h-full object-cover" alt="18">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot19.png" class="w-full h-full object-cover" alt="19">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Screenshot20.png" class="w-full h-full object-cover" alt="20">
+                        </div>
+
+
+                        <!-- <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <video class="w-full h-full object-cover" loop muted controls>
+                                <source src="ProjectSceneVideo.mp4" type="video/mp4">
+                            </video>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 - 3D Animation -->
+            <div class="project-card rounded-xl overflow-hidden flex flex-col md:flex-row-reverse items-center">
+                <!-- Text Content (Right) -->
+                <div class="md:w-1/2 p-8 md:p-12">
+                    <span
+                        class="text-xs font-semibold px-2 py-1 bg-pink-900 bg-opacity-70 text-pink-200 rounded-full">3D
+                        ANIMATION</span>
+                    <h3 class="text-3xl font-bold mt-4 mb-4">Character Animation Practice</h3>
+                    <p class="text-gray-300 mb-6 text-lg">
+                        A collection of animation exercises where I explored basic movement, complex mechanics, and
+                        expressive motion.
+                    </p>
+
+                    <p style="text-align: justify; margin-bottom: 15px;">
+                        <strong>Character Animation Practice</strong> started with simple walk and run cycles and
+                        gradually evolved into
+                        more advanced animations like parkour moves and expressive dance sequences. These projects gave
+                        me the chance
+                        to understand body mechanics, timing, and personality in animation, while also improving my
+                        technical workflow.
+                    </p>
+
+                    <h3 class="text-3xl font-bold mt-6 mb-4"
+                        style="font-family: 'Montserrat', sans-serif !important; font-weight: 800; font-size: 32px;">
+                        <span class="gradient-text">What I Learned:</span>
+                    </h3>
+                    <ul style="text-align: justify; margin-bottom: 15px;">
+                        <li><strong>Walk & Run Cycles</strong> – understanding balance, weight shifting, and timing.
+                        </li>
+                        <li><strong>Parkour Mechanics</strong> – creating believable jumps, vaults, and rolls with fluid
+                            transitions.</li>
+                        <li><strong>Dance Animation</strong> – adding rhythm, personality, and expression to character
+                            movement.</li>
+                        <li><strong>Animation Principles</strong> – applying timing, spacing, and flow across different
+                            styles of motion.</li>
+                    </ul>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4"
+                        style="font-family: 'Montserrat', sans-serif !important; font-weight: 800; font-size: 32px;">
+                        <span class="gradient-text">Looking Back:</span>
+                    </h3>
+                    <p style="text-align: justify; margin-bottom: 15px;">
+                        These animations started simple but quickly grew more ambitious. Working on parkour and dance
+                        sequences showed me
+                        how much depth character animation can have, from technical precision to creative expression.
+                        This practice helped me gain confidence in my animation skills and sparked my interest in
+                        pushing characters
+                        beyond just functionality into storytelling through movement.
+                    </p>
+                </div>
+
+                <!-- Media (Left) -->
+                <div class="md:w-1/2 h-96 relative project-media-container overflow-hidden" tabindex="0">
+                    <!-- Carousel Navigation Arrows -->
+                    <button
+                        class="media-prev-btn absolute left-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button
+                        class="media-next-btn absolute right-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <!-- Media Items -->
+                    <div class="media-items-wrapper relative w-full h-full">
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <video class="w-full h-full object-cover">
+                                <source src="ZombieAnimations.mp4" type="video/mp4">
+                            </video>
+                            <button
+                                class="media-play-btn absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-3 md:p-4 rounded-full hover:bg-opacity-70 transition-opacity duration-300"
+                                style="opacity: 1">
+                                <i class="fas fa-play text-base md:text-xl"></i>
+                            </button>
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <video class="w-full h-full object-cover">
+                                <source src="StickmanTest.mp4" type="video/mp4">
+                            </video>
+                            <button
+                                class="media-play-btn absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-3 md:p-4 rounded-full hover:bg-opacity-70 transition-opacity duration-300"
+                                style="opacity: 1">
+                                <i class="fas fa-play text-base md:text-xl"></i>
+                            </button>
+
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <video class="w-full h-full object-cover">
+                                <source src="DanteStickmanDanceEdited.mp4" type="video/mp4">
+                            </video>
+                            <button
+                                class="media-play-btn absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-3 md:p-4 rounded-full hover:bg-opacity-70 transition-opacity duration-300"
+                                style="opacity: 1">
+                                <i class="fas fa-play text-base md:text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Project 3 - 3D Models -->
+            <div class="project-card rounded-xl overflow-hidden flex flex-col md:flex-row items-center">
+
+                <!-- Text Content (Left) -->
+                <div class="md:w-1/2 p-8 md:p-12">
+                    <span
+                        class="text-xs font-semibold px-2 py-1 bg-orange-900 bg-opacity-70 text-orange-200 rounded-full">3D
+                        MODELS</span>
+                    <h3 class="text-3xl font-bold mt-4 mb-4">3D Models</h3>
+                    <p class="text-gray-300 mb-6 text-lg">
+                        Some of my modeling projects
+                    </p>
+                    <p style="text-align: justify; margin-bottom: 15px;">
+                        <strong>Greek Temple Ruin</strong> was the project where I first experimented with environment
+                        design.
+                        I modeled a classical-style temple, added surrounding details like trees, street lamps, and a
+                        path,
+                        and set it all against a nighttime backdrop. This project was my introduction to composition,
+                        lighting,
+                        and creating a mood in 3D spaces, which made me realize how much atmosphere matters in
+                        storytelling.
+                    </p>
+
+                    <h3 class="text-3xl font-bold mt-6 mb-4"
+                        style="font-family: 'Montserrat', sans-serif !important; font-weight: 800; font-size: 32px;">
+                        <span class="gradient-text">What I Learned:</span>
+                    </h3>
+                    <ul style="text-align: justify; margin-bottom: 15px;">
+                        <li><strong>Modeling Basics</strong> – building architectural shapes like columns, stairs, and
+                            ruins.</li>
+                        <li><strong>Environment Composition</strong> – arranging props such as trees, signs, and cars to
+                            make the scene feel alive.</li>
+                        <li><strong>Lighting</strong> – experimenting with night-time street lighting to highlight focal
+                            points.</li>
+                        <li><strong>Atmosphere</strong> – learning how shadows, contrast, and placement affect mood.
+                        </li>
+                    </ul>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4"
+                        style="font-family: 'Montserrat', sans-serif !important; font-weight: 800; font-size: 32px;">
+                        <span class="gradient-text">Looking Back:</span>
+                    </h3>
+                    <p style="text-align: justify; margin-bottom: 15px;">
+                        This project was a big milestone because it was my first attempt at creating a full environment
+                        rather than a single object.
+                        It taught me how to think beyond just the model itself and consider composition, lighting, and
+                        atmosphere as part of the storytelling.
+                        Even though it was a beginner project, <strong>Greek Temple Ruin</strong> made me appreciate the
+                        creative possibilities in environment design.
+                    </p>
+                </div>
+
+                <div class="md:w-1/2 h-96 relative project-media-container overflow-hidden" tabindex="0">
+                    <!-- Carousel Navigation Arrows -->
+                    <button
+                        class="media-prev-btn absolute left-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button
+                        class="media-next-btn absolute right-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <!-- Media Items -->
+                    <div class="media-items-wrapper relative w-full h-full">
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 opacity-100">
+                            <img src="ProjectScene.png" class="w-full h-full object-cover" alt="Scene 1">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="ProjectScene2.png" class="w-full h-full object-cover" alt="Scene 2">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="SnowDay.png" class="w-full h-full object-cover" alt="Scene 3">
+                        </div>
+                        <div
+                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            <img src="Brainiac.png" class="w-full h-full object-cover" alt="Scene 4">
+                        </div>
+
+                      
+                    </div>
+                </div>
+
+            </div>
+
+
+    </section>
+
+    <div class="section-divider max-w-7xl mx-auto my-20"></div>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <div class="lg:w-1/2 relative">
+                <div class="relative rounded-xl overflow-hidden h-96 w-full">
+                    <div class="absolute inset-0 bg-[url('./Mefr.jpeg')] bg-cover bg-[center_35%]">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-6">
+                        <h3 class="text-2xl font-bold text-white">Pinchiș Daniel</h3>
+                        <p class="text-gray-300">Digital Alchemist</p>
+                    </div>
+                </div>
+                <div
+                    class="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-purple-900 bg-opacity-70 z-0 floating">
+                </div>
+            </div>
+
+            <div class="lg:w-1/2">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 title-font">
+                    <span class="gradient-text">About The Alchemist</span>
+                </h2>
+                <p class="text-gray-400 mb-4">
+                    My name is Pinchiș Daniel. I come from Romania and am currently a student at Karel de Grote in
+                    Antwerp,
+                    pursuing a degree in Multimedia and Creative Technologies. I am developing skills in 3D modeling and
+                    animations, game development, editing, and coding.
+                </p>
+                <p class="text-gray-400 mb-6">
+                    With the skills I’ve been refining throughout my studies, I combine coding, editing, design, and 3D
+                    art into unique projects.
+                    That’s why I call myself a Digital Alchemist.
+                </p>
+
+
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-300">Creative Focus</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-800 bg-opacity-50 text-gray-300 rounded-full text-sm">Atmospheric
+                            Design</span>
+                        <span class="px-3 py-1 bg-gray-800 bg-opacity-50 text-gray-300 rounded-full text-sm">Interactive
+                            Storytelling</span>
+                        <span
+                            class="px-3 py-1 bg-gray-800 bg-opacity-50 text-gray-300 rounded-full text-sm">Psychological
+                            Horror</span>
+                        <span class="px-3 py-1 bg-gray-800 bg-opacity-50 text-gray-300 rounded-full text-sm">Immersive
+                            Experiences</span>
+                        <span class="px-3 py-1 bg-gray-800 bg-opacity-50 text-gray-300 rounded-full text-sm">World
+                            Building</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-300">Technical Skills</h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <!-- Left Column -->
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-pink-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                    <i class="fab fa-html5 text-pink-400"></i>
+                                </div>
+                                <span class="text-gray-300">HTML/CSS</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-indigo-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                    <i class="fas fa-code text-indigo-400"></i>
+                                </div>
+                                <span class="text-gray-300">C#</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-green-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                    <i class="fab fa-js text-green-400"></i>
+                                </div>
+                                <span class="text-gray-300">JavaScript</span>
+                            </div>
+                        </div>
+
+                        <!-- Middle Column -->
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-blue-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                    <i class="fas fa-cube text-blue-400"></i>
+                                </div>
+                                <span class="text-gray-300">Blender</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                    <i class="fab fa-unity text-purple-400"></i>
+                                </div>
+                                <span class="text-gray-300">Unity</span>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-red-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                    <i class="fas fa-pen-fancy text-red-400"></i>
+                                </div>
+                                <span class="text-gray-300">Adobe Illustrator</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-yellow-900 bg-opacity-50 flex items-center justify-center mr-3">
+                                    <i class="fas fa-film text-yellow-400"></i>
+                                </div>
+                                <span class="text-gray-300">Premiere Pro</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-7xl mx-auto my-20"></div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 title-font">
+                <span class="gradient-text">Summon The Alchemist</span>
+            </h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                Interested in collaborating? Let me know!
+            </p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-12">
+            <div class="lg:w-1/2">
+                <form class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-400 mb-1">Your Name</label>
+                        <input type="text" id="name"
+                            class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-300 placeholder-gray-600 transition duration-300">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
+                        <input type="email" id="email"
+                            class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-300 placeholder-gray-600 transition duration-300">
+                    </div>
+                    <div>
+                        <label for="project" class="block text-sm font-medium text-gray-400 mb-1">Project Type</label>
+                        <select id="project"
+                            class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-300 placeholder-gray-600 transition duration-300">
+                            <option value="" disabled selected>Select a project type</option>
+                            <option value="game">Game Development</option>
+                            <option value="film">Short Film</option>
+                            <option value="animation">3D Animation</option>
+                            <option value="web">Interactive Website</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-400 mb-1">Your Vision</label>
+                        <textarea id="message" rows="5"
+                            class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent text-gray-300 placeholder-gray-600 transition duration-300"
+                            placeholder="Describe your project in detail..."></textarea>
+                    </div>
+                    <div>
+                        <button type="submit"
+                            class="w-full px-6 py-3 bg-gradient-to-r from-purple-800 to-blue-600 rounded-lg text-white font-medium hover:opacity-90 transition duration-300 transform hover:scale-[1.02]">
+                            SEND MESSAGE
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="lg:w-1/2">
+                <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 h-full">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-300">Other Ways to Connect</h3>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-900 bg-opacity-50 flex items-center justify-center mr-4">
+                                <i class="fas fa-envelope text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 font-medium mb-1">Email</h4>
+                                <a href="mailto:pinchisdaniel@gmail.com"
+                                    class="text-gray-300 hover:text-white transition duration-300">pinchisdaniel@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-900 bg-opacity-50 flex items-center justify-center mr-4">
+                                <i class="fab fa-linkedin text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 font-medium mb-1">LinkedIn</h4>
+                                <a href="https://www.linkedin.com/in/pinchis-daniel-b52083333/" target="_blank"
+                                    class="text-gray-300 hover:text-white transition duration-300">Pinchiș Daniel</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-pink-900 bg-opacity-50 flex items-center justify-center mr-4">
+                                <i class="fab fa-instagram text-pink-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 font-medium mb-1">Instagram</h4>
+                                <a href="https://www.instagram.com/danny_m4a1/" target="_blank"
+                                    class="text-gray-300 hover:text-white transition duration-300">danny_m4a1</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-gray-700 bg-opacity-50 flex items-center justify-center mr-4">
+                                <i class="fab fa-github text-gray-300"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 font-medium mb-1">GitHub</h4>
+                                <a href="https://github.com/pinchisdaniel" target="_blank"
+                                    class="text-gray-300 hover:text-white transition duration-300">Pinchiș Daniel</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-12 pt-8 border-t border-gray-800">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-300">Current Availability</h3>
+                        <div class="flex items-center">
+                            <span class="relative flex h-3 w-3 mr-3">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                            <span class="text-gray-300">Available for select projects</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-2">Response time: 1-3 business days</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <span class="text-2xl font-bold gradient-text title-font">Pinchiș Daniel</span>
+                    <p class="text-gray-500 text-sm mt-2">© 2025 Pinchiș Daniel. All rights reserved.</p>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white transition duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-white transition duration-300">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-white transition duration-300">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-white transition duration-300">
+                        <i class="fab fa-artstation"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-white transition duration-300">
+                        <i class="fab fa-itch-io"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-800">
+                <p class="text-gray-500 text-center text-sm">
+                    "Every artist was once an amateur" - Ralph Waldo Emerson
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cursor-ball"></div>
+
+    <script>
+        // Cursor Ball Effect
+        const cursorBall = document.querySelector('.cursor-ball');
+        let mouseX = 0;
+        let mouseY = 0;
+        let ballX = 0;
+        let ballY = 0;
+        let speed = 0.1;
+
+        // Hide cursor ball on mobile
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            cursorBall.style.display = 'none';
+        } else {
+            function animate() {
+                let distX = mouseX - ballX;
+                let distY = mouseY - ballY;
+                ballX = ballX + (distX * speed);
+                ballY = ballY + (distY * speed);
+                cursorBall.style.left = ballX + 'px';
+                cursorBall.style.top = ballY + 'px';
+                requestAnimationFrame(animate);
+            }
+            animate();
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+        }
+
+        function animate() {
+            // Calculate distance between ball and mouse
+            let distX = mouseX - ballX;
+            let distY = mouseY - ballY;
+
+            // Apply easing
+            ballX = ballX + (distX * speed);
+            ballY = ballY + (distY * speed);
+
+            // Update ball position
+            cursorBall.style.left = ballX + 'px';
+            cursorBall.style.top = ballY + 'px';
+
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animate();
+
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+
+        document.querySelectorAll('.project-media-container').forEach(container => {
+            const items = Array.from(container.querySelectorAll('.media-item'));
+            const prevBtn = container.querySelector('.media-prev-btn');
+            const nextBtn = container.querySelector('.media-next-btn');
+            let currentIndex = 0;
+
+            // Show the first item immediately
+            items[currentIndex].classList.remove('opacity-0');
+            items[currentIndex].classList.add('opacity-100');
+
+            function showItem(index) {
+                if (!items.length) return;
+                // clamp index
+                index = (index + items.length) % items.length;
+                // Hide all
+                items.forEach((it, i) => {
+                    it.classList.remove('opacity-100');
+                    it.classList.add('opacity-0');
+                    // Pause any video and show play button
+                    const v = it.querySelector('video');
+                    const pb = it.querySelector('.media-play-btn');
+                    if (v) {
+                        try { v.pause(); } catch (e) { }
+                        if (pb) pb.style.display = 'block';
+                    }
+                });
+
+                // Show requested
+                const target = items[index];
+                target.classList.remove('opacity-0');
+                target.classList.add('opacity-100');
+                currentIndex = index;
+            }
+
+            // Setup each item once
+            items.forEach(item => {
+                // Encode image srcs so spaces or parentheses don't break loading on some servers
+                item.querySelectorAll('img').forEach(img => {
+                    const s = img.getAttribute('src');
+                    if (s) img.setAttribute('src', encodeURI(s));
+                });
+
+                const video = item.querySelector('video');
+                const playBtn = item.querySelector('.media-play-btn');
+
+                if (video) {
+                    // ensure controls are hidden for our custom overlay playback (we keep native controls for desktop where provided)
+                    video.preload = 'metadata';
+
+                    // Add overlay for easy tap-to-play on mobile
+                    const overlay = document.createElement('div');
+                    Object.assign(overlay.style, {
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        cursor: 'pointer',
+                        zIndex: 9,
+                        background: 'transparent'
+                    });
+                    item.appendChild(overlay);
+
+                    // Play/pause via the overlay (tap anywhere)
+                    overlay.addEventListener('click', e => {
+                        e.stopPropagation();
+                        // Ignore if user clicked on nav buttons (shouldn't happen due to z-index but safe)
+                        if (e.target.closest('.media-prev-btn, .media-next-btn')) return;
+                        if (video.paused) video.play();
+                        else video.pause();
+                    });
+
+                    // Play button click
+                    if (playBtn) {
+                        playBtn.addEventListener('click', e => {
+                            e.stopPropagation();
+                            if (video.paused) video.play();
+                            else video.pause();
+                        });
+                    }
+
+                    video.addEventListener('play', () => {
+                        if (playBtn) {
+                            setTimeout(() => { playBtn.style.opacity = '0'; }, 600);
+                            playBtn.innerHTML = '<i class="fas fa-pause text-base md:text-xl"></i>';
+                        }
+                    });
+
+                    video.addEventListener('pause', () => {
+                        if (playBtn) {
+                            playBtn.style.opacity = '1';
+                            playBtn.innerHTML = '<i class="fas fa-play text-base md:text-xl"></i>';
+                        }
+                    });
+                }
+            });
+
+            // Show first slide
+            showItem(0);
+
+            function nextItem() {
+                showItem((currentIndex + 1) % items.length);
+            }
+
+            function prevItem() {
+                showItem((currentIndex - 1 + items.length) % items.length);
+            }
+
+            // Buttons
+            if (nextBtn) nextBtn.addEventListener('click', e => { e.stopPropagation(); nextItem(); });
+            if (prevBtn) prevBtn.addEventListener('click', e => { e.stopPropagation(); prevItem(); });
+
+            // Make arrows visible by default on touch devices (mobile/tablet)
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                if (prevBtn) prevBtn.classList.remove('opacity-0');
+                if (nextBtn) nextBtn.classList.remove('opacity-0');
+            } else {
+                // show on hover for mouse devices (keeps original UI)
+                container.addEventListener('mouseenter', () => {
+                    if (prevBtn) prevBtn.classList.remove('opacity-0');
+                    if (nextBtn) nextBtn.classList.remove('opacity-0');
+                });
+                container.addEventListener('mouseleave', () => {
+                    if (prevBtn) prevBtn.classList.add('opacity-0');
+                    if (nextBtn) nextBtn.classList.add('opacity-0');
+                });
+            }
+
+            // Add swipe support for mobile
+            let startX = 0;
+            container.addEventListener("touchstart", e => {
+                startX = e.touches[0].clientX;
+            });
+
+            container.addEventListener("touchend", e => {
+                let dx = e.changedTouches[0].clientX - startX;
+                if (dx > 50) { showItem(currentIndex - 1); }
+                if (dx < -50) { showItem(currentIndex + 1); }
+            });
+
+            // Keyboard accessibility
+            container.addEventListener('keydown', e => {
+                if (e.key === 'ArrowRight') nextItem();
+                if (e.key === 'ArrowLeft') prevItem();
+            });
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Add shadow to navbar on scroll
+        window.addEventListener('scroll', function () {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Form submission
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const project = document.getElementById('project').value;
+                const message = document.getElementById('message').value;
+
+                // Here you would typically send this data to a server
+                console.log({ name, email, project, message });
+
+                // Show a success message
+                alert('Your message has been sent. I will respond as soon as possible.');
+                form.reset();
+            });
+        }
+    </script>
+</body>
+
+</html>

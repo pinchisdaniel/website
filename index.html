@@ -126,28 +126,25 @@
         }
 
         @media (hover: none) and (pointer: coarse) {
+
+            .media-item img,
+            .media-item video {
+                display: block !important;
+                position: relative !important;
+                width: 100% !important;
+                height: auto !important;
+                object-fit: cover !important;
+                z-index: 2 !important;
+            }
+
             .media-item {
                 opacity: 1 !important;
                 position: relative !important;
             }
 
-            .media-items-wrapper {
-                position: relative !important;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-
-            .media-item,
-            .media-items-wrapper img,
-            .media-items-wrapper video {
-                opacity: 1 !important;
-                position: relative !important;
-                display: block !important;
-            }
-
-            .project-card {
-                border: 2px solid red !important;
+            .project-media-container {
+                min-height: 300px !important;
+                overflow: visible !important;
             }
         }
     </style>

@@ -868,8 +868,6 @@
     <div class="cursor-ball"></div>
 
     <script>
-        console.log("✅ Portfolio JS loaded");
-        alert("✅ JS running");
 
         // Cursor Ball Effect
         const cursorBall = document.querySelector('.cursor-ball');
@@ -943,22 +941,25 @@
                     currentIndex = index;
                 }
 
-                // --- Touch-friendly buttons & visibility fix for mobile ---
-                if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-                    // Always show arrows
+                // ✅ Revised mobile/desktop behavior
+                const isTouch = window.matchMedia("(pointer: coarse)").matches || 'ontouchstart' in window;
+
+                if (isTouch) {
+                    // Mobile: always show arrows + enable swipe
                     prevBtn?.classList.remove('opacity-0');
                     nextBtn?.classList.remove('opacity-0');
 
-                    // Also ensure first item is actually visible
-                    if (items.length > 0) {
-                        items.forEach(it => {
-                            it.classList.remove('opacity-0');
-                            it.classList.add('opacity-100');
-                        });
-                        showItem(0); // refresh first frame
-                    }
+                    let startX = 0;
+                    container.addEventListener('touchstart', e => {
+                        startX = e.touches[0].clientX;
+                    });
+                    container.addEventListener('touchend', e => {
+                        const dx = e.changedTouches[0].clientX - startX;
+                        if (dx > 50) showItem(currentIndex - 1);
+                        if (dx < -50) showItem(currentIndex + 1);
+                    });
                 } else {
-                    // For desktop: show on hover only
+                    // Desktop: hover-based arrows
                     container.addEventListener('mouseenter', () => {
                         prevBtn?.classList.remove('opacity-0');
                         nextBtn?.classList.remove('opacity-0');
@@ -968,6 +969,7 @@
                         nextBtn?.classList.add('opacity-0');
                     });
                 }
+
 
 
                 // --- Swipe support ---

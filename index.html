@@ -917,11 +917,22 @@
                     currentIndex = index;
                 }
 
-                // --- Touch-friendly buttons ---
+                // --- Touch-friendly buttons & visibility fix for mobile ---
                 if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-                    if (prevBtn) prevBtn.classList.remove('opacity-0');
-                    if (nextBtn) nextBtn.classList.remove('opacity-0');
+                    // Always show arrows
+                    prevBtn?.classList.remove('opacity-0');
+                    nextBtn?.classList.remove('opacity-0');
+
+                    // Also ensure first item is actually visible
+                    if (items.length > 0) {
+                        items.forEach(it => {
+                            it.classList.remove('opacity-0');
+                            it.classList.add('opacity-100');
+                        });
+                        showItem(0); // refresh first frame
+                    }
                 } else {
+                    // For desktop: show on hover only
                     container.addEventListener('mouseenter', () => {
                         prevBtn?.classList.remove('opacity-0');
                         nextBtn?.classList.remove('opacity-0');
@@ -931,6 +942,7 @@
                         nextBtn?.classList.add('opacity-0');
                     });
                 }
+
 
                 // --- Swipe support ---
                 let startX = 0;

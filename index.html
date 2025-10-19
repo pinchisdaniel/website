@@ -157,6 +157,24 @@
                 overflow: visible !important;
             }
         }
+
+        .project-media-container {
+            touch-action: pan-y;
+            /* allow horizontal swipes without scrolling interference */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .media-track {
+            display: flex;
+            transition: transform 0.4s ease;
+            will-change: transform;
+        }
+
+        .media-item {
+            flex: 0 0 100%;
+            user-select: none;
+        }
     </style>
 </head>
 
@@ -295,109 +313,34 @@
                 </div>
 
                 <!-- Media (Right) -->
-                <div class="md:w-1/2 h-96 relative project-media-container overflow-hidden" tabindex="0">
-                    <!-- Carousel Navigation Arrows -->
-                    <button
-                        class="media-prev-btn absolute left-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+                <div class="md:w-1/2 relative project-media-container overflow-hidden" tabindex="0">
+                    <!-- Carousel Navigation -->
+                    <button class="media-prev-btn absolute left-3 top-1/2 transform -translate-y-1/2 z-20 
+                w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 
+                text-white opacity-80 hover:scale-110 transition">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button
-                        class="media-next-btn absolute right-4 top-1/2 transform -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 text-white opacity-0 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/30">
+
+                    <button class="media-next-btn absolute right-3 top-1/2 transform -translate-y-1/2 z-20 
+                w-10 h-10 rounded-full bg-gradient-to-r from-purple-800 to-blue-600 
+                text-white opacity-80 hover:scale-110 transition">
                         <i class="fas fa-chevron-right"></i>
                     </button>
 
-                    <!-- Media Items -->
-                    <div class="media-items-wrapper relative w-full h-full">
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                    <!-- Real carousel wrapper -->
+                    <div class="media-track flex w-full h-96 transition-transform duration-500 ease-out">
+                        <div class="media-item flex-shrink-0 w-full h-full">
                             <img src="/images/screenshot1.jpeg" class="w-full h-full object-cover" alt="1">
                         </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                        <div class="media-item flex-shrink-0 w-full h-full">
                             <img src="/images/screenshot2.jpeg" class="w-full h-full object-cover" alt="2">
                         </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                        <div class="media-item flex-shrink-0 w-full h-full">
                             <img src="/images/screenshot3.jpeg" class="w-full h-full object-cover" alt="3">
                         </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot4.jpeg" class="w-full h-full object-cover" alt="4">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot5.jpeg" class="w-full h-full object-cover" alt="5">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot6.jpeg" class="w-full h-full object-cover" alt="6">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot7.jpeg" class="w-full h-full object-cover" alt="7">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot8.jpeg" class="w-full h-full object-cover" alt="8">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot9.jpeg" class="w-full h-full object-cover" alt="9">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot10.jpeg" class="w-full h-full object-cover" alt="10">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot11.jpeg" class="w-full h-full object-cover" alt="11">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot12.jpeg" class="w-full h-full object-cover" alt="12">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot13.jpeg" class="w-full h-full object-cover" alt="13">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot14.jpeg" class="w-full h-full object-cover" alt="14">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot15.jpeg" class="w-full h-full object-cover" alt="15">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot16.jpeg" class="w-full h-full object-cover" alt="16">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot17.jpeg" class="w-full h-full object-cover" alt="17">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot18.jpeg" class="w-full h-full object-cover" alt="18">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot19.jpeg" class="w-full h-full object-cover" alt="19">
-                        </div>
-                        <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="/images/screenshot20.jpeg" class="w-full h-full object-cover" alt="20">
-                        </div>
-
-
-                        <!-- <div
-                           class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                           <video class="w-full h-full object-cover" loop muted controls>
-                               <source src="ProjectSceneVideo.mp4" type="video/mp4">
-                           </video>
-                       </div> -->
                     </div>
                 </div>
+
             </div>
 
             <!-- Project 2 - 3D Animation -->
@@ -913,96 +856,75 @@
             return encodeURI(path);
         }
 
-        // ✅ FIXED — Unified carousel setup (desktop + mobile safe)
-        document.addEventListener('DOMContentLoaded', () => {
-
-            document.querySelectorAll('.project-media-container').forEach(container => {
-                const items = Array.from(container.querySelectorAll('.media-item'));
-                const prevBtn = container.querySelector('.media-prev-btn');
-                const nextBtn = container.querySelector('.media-next-btn');
+        // ✅ TRUE Swipe Carousel – works everywhere
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".project-media-container").forEach(container => {
+                const track = container.querySelector(".media-track");
+                const slides = Array.from(container.querySelectorAll(".media-item"));
+                const prevBtn = container.querySelector(".media-prev-btn");
+                const nextBtn = container.querySelector(".media-next-btn");
                 let currentIndex = 0;
-
-                // --- Ensure the first item shows properly on all devices ---
-                if (items.length > 0) {
-                    items.forEach(it => it.classList.add('opacity-0'));
-                    items[0].classList.remove('opacity-0');
-                    items[0].classList.add('opacity-100');
-                }
-
-                function showItem(index) {
-                    if (!items.length) return;
-                    index = (index + items.length) % items.length;
-
-                    items.forEach(it => {
-                        it.classList.remove('opacity-100');
-                        it.classList.add('opacity-0');
-
-                        // Pause videos when hidden
-                        const v = it.querySelector('video');
-                        const pb = it.querySelector('.media-play-btn');
-                        if (v) {
-                            v.pause();
-                            if (pb) pb.style.display = 'block';
-                        }
-                    });
-
-                    const target = items[index];
-                    target.classList.remove('opacity-0');
-                    target.classList.add('opacity-100');
-                    currentIndex = index;
-                }
-
-                // ✅ Revised mobile/desktop behavior
-                const isTouch = window.matchMedia("(pointer: coarse)").matches || 'ontouchstart' in window;
-
-                if (isTouch) {
-                    // Mobile: always show arrows + enable swipe
-                    prevBtn?.classList.remove('opacity-0');
-                    nextBtn?.classList.remove('opacity-0');
-
-                    let startX = 0;
-                    container.addEventListener('touchstart', e => {
-                        startX = e.touches[0].clientX;
-                    });
-                    container.addEventListener('touchend', e => {
-                        const dx = e.changedTouches[0].clientX - startX;
-                        if (dx > 50) showItem(currentIndex - 1);
-                        if (dx < -50) showItem(currentIndex + 1);
-                    });
-                } else {
-                    // Desktop: hover-based arrows
-                    container.addEventListener('mouseenter', () => {
-                        prevBtn?.classList.remove('opacity-0');
-                        nextBtn?.classList.remove('opacity-0');
-                    });
-                    container.addEventListener('mouseleave', () => {
-                        prevBtn?.classList.add('opacity-0');
-                        nextBtn?.classList.add('opacity-0');
-                    });
-                }
-
-
-
-                // --- Swipe support ---
                 let startX = 0;
-                container.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-                container.addEventListener('touchend', e => {
-                    const dx = e.changedTouches[0].clientX - startX;
-                    if (dx > 50) showItem(currentIndex - 1);
-                    if (dx < -50) showItem(currentIndex + 1);
-                });
+                let currentTranslate = 0;
+                let prevTranslate = 0;
+                let dragging = false;
 
-                // --- Buttons ---
-                nextBtn?.addEventListener('click', e => { e.stopPropagation(); showItem(currentIndex + 1); });
-                prevBtn?.addEventListener('click', e => { e.stopPropagation(); showItem(currentIndex - 1); });
+                function setPosition() {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
 
-                // --- Fix Safari: ensure images/videos keep layout ---
-                container.querySelectorAll('.media-item img, .media-item video').forEach(el => {
-                    el.style.minHeight = '100%';
-                    el.style.display = 'block';
-                });
+                function clampIndex(i) {
+                    return Math.max(0, Math.min(i, slides.length - 1));
+                }
+
+                function goToSlide(i) {
+                    currentIndex = clampIndex(i);
+                    setPosition();
+                }
+
+                // Buttons
+                nextBtn?.addEventListener("click", () => goToSlide(currentIndex + 1));
+                prevBtn?.addEventListener("click", () => goToSlide(currentIndex - 1));
+
+                // Touch + mouse swipe
+                const start = x => {
+                    dragging = true;
+                    startX = x;
+                    track.style.transition = "none";
+                };
+                const move = x => {
+                    if (!dragging) return;
+                    const dx = x - startX;
+                    const percentage = (dx / container.offsetWidth) * 100;
+                    track.style.transform = `translateX(calc(-${currentIndex * 100}% + ${percentage}%))`;
+                };
+                const end = x => {
+                    if (!dragging) return;
+                    dragging = false;
+                    const dx = x - startX;
+                    const threshold = container.offsetWidth / 4;
+                    if (dx > threshold) currentIndex = clampIndex(currentIndex - 1);
+                    else if (dx < -threshold) currentIndex = clampIndex(currentIndex + 1);
+                    track.style.transition = "transform 0.4s ease";
+                    setPosition();
+                };
+
+                // Touch listeners
+                container.addEventListener("touchstart", e => start(e.touches[0].clientX));
+                container.addEventListener("touchmove", e => move(e.touches[0].clientX));
+                container.addEventListener("touchend", e => end(e.changedTouches[0].clientX));
+
+                // Mouse listeners (desktop drag)
+                container.addEventListener("mousedown", e => start(e.clientX));
+                container.addEventListener("mousemove", e => move(e.clientX));
+                container.addEventListener("mouseup", e => end(e.clientX));
+                container.addEventListener("mouseleave", e => end(e.clientX));
+
+                // Initial position
+                setPosition();
             });
         });
+
 
 
 

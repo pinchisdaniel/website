@@ -172,13 +172,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0">
-            <video autoplay muted loop class="w-full h-full object-cover">
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-dark-foggy-forest-1080-large.mp4"
-                    type="video/mp4">
-            </video>
-            <div class="absolute inset-0 hero-overlay"></div>
-        </div>
+
 
         <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 title-font glow">
@@ -885,303 +879,83 @@
             return encodeURI(path);
         }
 
-        // Set up media carousels
-        document.querySelectorAll('.project-media-container').forEach(container => {
-            const items = Array.from(container.querySelectorAll('.media-item'));
-            const prevBtn = container.querySelector('.media-prev-btn');
-            const nextBtn = container.querySelector('.media-next-btn');
-            let currentIndex = 0;
+        // ✅ FIXED — Unified carousel setup (desktop + mobile safe)
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.project-media-container').forEach(container => {
+                const items = Array.from(container.querySelectorAll('.media-item'));
+                const prevBtn = container.querySelector('.media-prev-btn');
+                const nextBtn = container.querySelector('.media-next-btn');
+                let currentIndex = 0;
 
-            // Show the first item immediately
-            if (items.length > 0) {
-                items[currentIndex].classList.remove('opacity-0');
-                items[currentIndex].classList.add('opacity-100');
-            }
-
-            function showItem(index) {
-                if (!items.length) return;
-                // clamp index
-                index = (index + items.length) % items.length;
-                // Hide all
-                items.forEach((it, i) => {
-                    it.classList.remove('opacity-100');
-                    it.classList.add('opacity-0');
-                    // Pause any video and show play button
-                    const v = it.querySelector('video');
-                    const pb = it.querySelector('.media-play-btn');
-                    if (v) {
-                        try { v.pause(); } catch (e) { }
-                        if (pb) pb.style.display = 'block';
-                    }
-                });
-
-                // Show requested
-                const target = items[index];
-                target.classList.remove('opacity-0');
-                target.classList.add('opacity-100');
-                currentIndex = index;
-            }
-
-            // Setup each item once
-            items.forEach(item => {
-                // Encode image srcs so spaces or parentheses don't break loading on some servers
-                item.querySelectorAll('img').forEach(img => {
-                    const s = img.getAttribute('src');
-                    if (s) img.setAttribute('src', encodeImagePath(s));
-                });
-
-                const video = item.querySelector('video');
-                const playBtn = item.querySelector('.media-play-btn');
-
-                if (video) {
-                    // ensure controls are hidden for our custom overlay playback (we keep native controls for desktop where provided)
-                    video.preload = 'metadata';
-
-                    // Add overlay for easy tap-to-play on mobile
-                    const overlay = document.createElement('div');
-                    Object.assign(overlay.style, {
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        cursor: 'pointer',
-                        zIndex: 9,
-                        background: 'transparent'
-                    });
-                    item.appendChild(overlay);
-
-                    // Play/pause via the overlay (tap anywhere)
-                    overlay.addEventListener('click', e => {
-                        e.stopPropagation();
-                        // Ignore if user clicked on nav buttons (shouldn't happen due to z-index but safe)
-                        if (e.target.closest('.media-prev-btn, .media-next-btn')) return;
-                        if (video.paused) video.play();
-                        else video.pause();
-                    });
-
-                    // Play button click
-                    if (playBtn) {
-                        playBtn.addEventListener('click', e => {
-                            e.stopPropagation();
-                            if (video.paused) video.play();
-                            else video.pause();
-                        });
-                    }
-
-                    video.addEventListener('play', () => {
-                        if (playBtn) {
-                            setTimeout(() => { playBtn.style.opacity = '0'; }, 600);
-                            playBtn.innerHTML = '<i class="fas fa-pause text-base md:text-xl"></i>';
-                        }
-                    });
-
-                    video.addEventListener('pause', () => {
-                        if (playBtn) {
-                            playBtn.style.opacity = '1';
-                            playBtn.innerHTML = '<i class="fas fa-play text-base md:text-xl"></i>';
-                        }
-                    });
+                // --- Ensure the first item shows properly on all devices ---
+                if (items.length > 0) {
+                    items.forEach(it => it.classList.add('opacity-0'));
+                    items[0].classList.remove('opacity-0');
+                    items[0].classList.add('opacity-100');
                 }
-            });
 
-            // Show first slide
-            showItem(0);
+                function showItem(index) {
+                    if (!items.length) return;
+                    index = (index + items.length) % items.length;
 
-            function nextItem() {
-                showItem((currentIndex + 1) % items.length);
-            }
+                    items.forEach(it => {
+                        it.classList.remove('opacity-100');
+                        it.classList.add('opacity-0');
 
-            function prevItem() {
-                showItem((currentIndex - 1 + items.length) % items.length);
-            }
+                        // Pause videos when hidden
+                        const v = it.querySelector('video');
+                        const pb = it.querySelector('.media-play-btn');
+                        if (v) {
+                            v.pause();
+                            if (pb) pb.style.display = 'block';
+                        }
+                    });
 
-            // Buttons
-            if (nextBtn) nextBtn.addEventListener('click', e => { e.stopPropagation(); nextItem(); });
-            if (prevBtn) prevBtn.addEventListener('click', e => { e.stopPropagation(); prevItem(); });
+                    const target = items[index];
+                    target.classList.remove('opacity-0');
+                    target.classList.add('opacity-100');
+                    currentIndex = index;
+                }
 
-            // Make arrows visible by default on touch devices (mobile/tablet)
-            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-                if (prevBtn) prevBtn.classList.remove('opacity-0');
-                if (nextBtn) nextBtn.classList.remove('opacity-0');
-            } else {
-                // show on hover for mouse devices (keeps original UI)
-                container.addEventListener('mouseenter', () => {
+                // --- Touch-friendly buttons ---
+                if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
                     if (prevBtn) prevBtn.classList.remove('opacity-0');
                     if (nextBtn) nextBtn.classList.remove('opacity-0');
+                } else {
+                    container.addEventListener('mouseenter', () => {
+                        prevBtn?.classList.remove('opacity-0');
+                        nextBtn?.classList.remove('opacity-0');
+                    });
+                    container.addEventListener('mouseleave', () => {
+                        prevBtn?.classList.add('opacity-0');
+                        nextBtn?.classList.add('opacity-0');
+                    });
+                }
+
+                // --- Swipe support ---
+                let startX = 0;
+                container.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+                container.addEventListener('touchend', e => {
+                    const dx = e.changedTouches[0].clientX - startX;
+                    if (dx > 50) showItem(currentIndex - 1);
+                    if (dx < -50) showItem(currentIndex + 1);
                 });
-                container.addEventListener('mouseleave', () => {
-                    if (prevBtn) prevBtn.classList.add('opacity-0');
-                    if (nextBtn) nextBtn.classList.add('opacity-0');
+
+                // --- Buttons ---
+                nextBtn?.addEventListener('click', e => { e.stopPropagation(); showItem(currentIndex + 1); });
+                prevBtn?.addEventListener('click', e => { e.stopPropagation(); showItem(currentIndex - 1); });
+
+                // --- Fix Safari: ensure images/videos keep layout ---
+                container.querySelectorAll('.media-item img, .media-item video').forEach(el => {
+                    el.style.minHeight = '100%';
+                    el.style.display = 'block';
                 });
-            }
-
-            // Add swipe support for mobile
-            let startX = 0;
-            container.addEventListener("touchstart", e => {
-                startX = e.touches[0].clientX;
-            });
-
-            container.addEventListener("touchend", e => {
-                let dx = e.changedTouches[0].clientX - startX;
-                if (dx > 50) { showItem(currentIndex - 1); }
-                if (dx < -50) { showItem(currentIndex + 1); }
-            });
-
-            // Keyboard accessibility
-            container.addEventListener('keydown', e => {
-                if (e.key === 'ArrowRight') nextItem();
-                if (e.key === 'ArrowLeft') prevItem();
             });
         });
 
 
-        document.querySelectorAll('.project-media-container').forEach(container => {
-            const items = Array.from(container.querySelectorAll('.media-item'));
-            const prevBtn = container.querySelector('.media-prev-btn');
-            const nextBtn = container.querySelector('.media-next-btn');
-            let currentIndex = 0;
 
-            // Show the first item immediately
-            items[currentIndex].classList.remove('opacity-0');
-            items[currentIndex].classList.add('opacity-100');
 
-            function showItem(index) {
-                if (!items.length) return;
-                // clamp index
-                index = (index + items.length) % items.length;
-                // Hide all
-                items.forEach((it, i) => {
-                    it.classList.remove('opacity-100');
-                    it.classList.add('opacity-0');
-                    // Pause any video and show play button
-                    const v = it.querySelector('video');
-                    const pb = it.querySelector('.media-play-btn');
-                    if (v) {
-                        try { v.pause(); } catch (e) { }
-                        if (pb) pb.style.display = 'block';
-                    }
-                });
-
-                // Show requested
-                const target = items[index];
-                target.classList.remove('opacity-0');
-                target.classList.add('opacity-100');
-                currentIndex = index;
-            }
-
-            // Setup each item once
-            items.forEach(item => {
-                // Encode image srcs so spaces or parentheses don't break loading on some servers
-                item.querySelectorAll('img').forEach(img => {
-                    const s = img.getAttribute('src');
-                    if (s) img.setAttribute('src', encodeURI(s));
-                });
-
-                const video = item.querySelector('video');
-                const playBtn = item.querySelector('.media-play-btn');
-
-                if (video) {
-                    // ensure controls are hidden for our custom overlay playback (we keep native controls for desktop where provided)
-                    video.preload = 'metadata';
-
-                    // Add overlay for easy tap-to-play on mobile
-                    const overlay = document.createElement('div');
-                    Object.assign(overlay.style, {
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        cursor: 'pointer',
-                        zIndex: 9,
-                        background: 'transparent'
-                    });
-                    item.appendChild(overlay);
-
-                    // Play/pause via the overlay (tap anywhere)
-                    overlay.addEventListener('click', e => {
-                        e.stopPropagation();
-                        // Ignore if user clicked on nav buttons (shouldn't happen due to z-index but safe)
-                        if (e.target.closest('.media-prev-btn, .media-next-btn')) return;
-                        if (video.paused) video.play();
-                        else video.pause();
-                    });
-
-                    // Play button click
-                    if (playBtn) {
-                        playBtn.addEventListener('click', e => {
-                            e.stopPropagation();
-                            if (video.paused) video.play();
-                            else video.pause();
-                        });
-                    }
-
-                    video.addEventListener('play', () => {
-                        if (playBtn) {
-                            setTimeout(() => { playBtn.style.opacity = '0'; }, 600);
-                            playBtn.innerHTML = '<i class="fas fa-pause text-base md:text-xl"></i>';
-                        }
-                    });
-
-                    video.addEventListener('pause', () => {
-                        if (playBtn) {
-                            playBtn.style.opacity = '1';
-                            playBtn.innerHTML = '<i class="fas fa-play text-base md:text-xl"></i>';
-                        }
-                    });
-                }
-            });
-
-            // Show first slide
-            showItem(0);
-
-            function nextItem() {
-                showItem((currentIndex + 1) % items.length);
-            }
-
-            function prevItem() {
-                showItem((currentIndex - 1 + items.length) % items.length);
-            }
-
-            // Buttons
-            if (nextBtn) nextBtn.addEventListener('click', e => { e.stopPropagation(); nextItem(); });
-            if (prevBtn) prevBtn.addEventListener('click', e => { e.stopPropagation(); prevItem(); });
-
-            // Make arrows visible by default on touch devices (mobile/tablet)
-            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-                if (prevBtn) prevBtn.classList.remove('opacity-0');
-                if (nextBtn) nextBtn.classList.remove('opacity-0');
-            } else {
-                // show on hover for mouse devices (keeps original UI)
-                container.addEventListener('mouseenter', () => {
-                    if (prevBtn) prevBtn.classList.remove('opacity-0');
-                    if (nextBtn) nextBtn.classList.remove('opacity-0');
-                });
-                container.addEventListener('mouseleave', () => {
-                    if (prevBtn) prevBtn.classList.add('opacity-0');
-                    if (nextBtn) nextBtn.classList.add('opacity-0');
-                });
-            }
-
-            // Add swipe support for mobile
-            let startX = 0;
-            container.addEventListener("touchstart", e => {
-                startX = e.touches[0].clientX;
-            });
-
-            container.addEventListener("touchend", e => {
-                let dx = e.changedTouches[0].clientX - startX;
-                if (dx > 50) { showItem(currentIndex - 1); }
-                if (dx < -50) { showItem(currentIndex + 1); }
-            });
-
-            // Keyboard accessibility
-            container.addEventListener('keydown', e => {
-                if (e.key === 'ArrowRight') nextItem();
-                if (e.key === 'ArrowLeft') prevItem();
-            });
-        });
 
         // Mobile menu toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function () {

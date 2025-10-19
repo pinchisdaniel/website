@@ -124,6 +124,20 @@
         .floating {
             animation: float 6s ease-in-out infinite;
         }
+
+        /* ✅ Mobile fix: disable hover-only effects on touchscreens */
+        @media (hover: none) and (pointer: coarse) {
+            .project-card:hover {
+                transform: none;
+                box-shadow: none;
+                border-color: rgba(138, 43, 226, 0.2);
+            }
+
+            .project-card .project-carousel-btn {
+                opacity: 1 !important;
+                /* make arrows visible */
+            }
+        }
     </style>
 </head>
 

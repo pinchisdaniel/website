@@ -904,7 +904,8 @@
         }
 
         // ✅ FIXED — Unified carousel setup (desktop + mobile safe)
-        window.addEventListener('load', () => {
+        document.addEventListener('DOMContentLoaded', () => {
+
             document.querySelectorAll('.project-media-container').forEach(container => {
                 const items = Array.from(container.querySelectorAll('.media-item'));
                 const prevBtn = container.querySelector('.media-prev-btn');

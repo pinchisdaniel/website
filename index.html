@@ -124,26 +124,6 @@
         .floating {
             animation: float 6s ease-in-out infinite;
         }
-
-        @media (hover: none) and (pointer: coarse) {
-
-            .project-media-container,
-            .media-items-wrapper,
-            .media-item {
-                position: relative !important;
-                min-height: 300px !important;
-                /* gives the browser a box to render into */
-                height: auto !important;
-            }
-
-            .media-item img,
-            .media-item video {
-                width: 100% !important;
-                height: auto !important;
-                display: block !important;
-                object-fit: cover !important;
-            }
-        }
     </style>
 </head>
 
@@ -296,7 +276,7 @@
                     <!-- Media Items -->
                     <div class="media-items-wrapper relative w-full h-full">
                         <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            class="media-item absolute inset-0 w-full h-full opacity-100 transition-opacity duration-500">
                             <img src="/images/screenshot1.jpeg" class="w-full h-full object-cover" alt="1">
                         </div>
                         <div
@@ -453,9 +433,9 @@
                     <!-- Media Items -->
                     <div class="media-items-wrapper relative w-full h-full">
                         <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
+                            class="media-item absolute inset-0 w-full h-full opacity-100 transition-opacity duration-500">
                             <video class="w-full h-full object-cover">
-                                <source src="./videos/zombieanimations.mp4" type="video/mp4">
+                                <source src="/videos/zombieanimations.mp4" type="video/mp4">
                             </video>
                             <button
                                 class="media-play-btn absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-3 md:p-4 rounded-full hover:bg-opacity-70 transition-opacity duration-300"
@@ -466,7 +446,7 @@
                         <div
                             class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
                             <video class="w-full h-full object-cover">
-                                <source src="./videos/stickmantest.mp4" type="video/mp4">
+                                <source src="/videos/stickmantest.mp4" type="video/mp4">
                             </video>
                             <button
                                 class="media-play-btn absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-3 md:p-4 rounded-full hover:bg-opacity-70 transition-opacity duration-300"
@@ -478,7 +458,7 @@
                         <div
                             class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
                             <video class="w-full h-full object-cover">
-                                <source src="./videos/stickmandance.mp4" type="video/mp4">
+                                <source src="/videos/stickmandance.mp4" type="video/mp4">
                             </video>
                             <button
                                 class="media-play-btn absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-3 md:p-4 rounded-full hover:bg-opacity-70 transition-opacity duration-300"
@@ -557,16 +537,16 @@
                     <!-- Media Items -->
                     <div class="media-items-wrapper relative w-full h-full">
                         <div
-                            class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 opacity-100">
-                            <img src="./images/projectscene.jpg" class="w-full h-full object-cover" alt="Scene 1">
+                            class="media-item absolute inset-0 w-full h-full opacity-100 transition-opacity duration-500 opacity-100">
+                            <img src="/images/projectscene.jpg" class="w-full h-full object-cover" alt="Scene 1">
                         </div>
                         <div
                             class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="./images/projectscene2.jpeg" class="w-full h-full object-cover" alt="Scene 2">
+                            <img src="/images/projectscene2.jpeg" class="w-full h-full object-cover" alt="Scene 2">
                         </div>
                         <div
                             class="media-item absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500">
-                            <img src="./images/snowday.jpeg" class="w-full h-full object-cover" alt="Scene 3">
+                            <img src="/images/snowday.jpeg" class="w-full h-full object-cover" alt="Scene 3">
                         </div>
 
 
@@ -586,8 +566,9 @@
         <div class="flex flex-col lg:flex-row items-center gap-12">
             <div class="lg:w-1/2 relative">
                 <div class="relative rounded-xl overflow-hidden h-96 w-full">
-                    <div class="absolute inset-0 bg-[url('/images/me.jpeg')] bg-cover bg-[center_35%]">
-                    </div>
+                    <img src="/images/me.jpeg" class="absolute inset-0 w-full h-full object-cover object-[50%_35%]"
+                        alt="Me">
+
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                     <div class="absolute bottom-0 left-0 p-6">
                         <h3 class="text-2xl font-bold text-white">Pinchiș Daniel</h3>
@@ -909,12 +890,16 @@
                 const nextBtn = container.querySelector('.media-next-btn');
                 let currentIndex = 0;
 
-                // --- Ensure the first item shows properly on all devices ---
+                // --- Initialize without blanking the first frame ---
+
                 if (items.length > 0) {
-                    items.forEach(it => it.classList.add('opacity-0'));
-                    items[0].classList.remove('opacity-0');
-                    items[0].classList.add('opacity-100');
+                    items.forEach((it, i) => {
+                        it.classList.remove('opacity-100', 'opacity-0');
+                        if (i === 0) it.classList.add('opacity-100'); // first stays visible (matches HTML)
+                        else it.classList.add('opacity-0');
+                    });
                 }
+
 
                 function showItem(index) {
                     if (!items.length) return;

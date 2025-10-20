@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
+  console.log("📩 Contact API triggered");
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
@@ -30,6 +31,8 @@ export default async function handler(req, res) {
       },
     });
 
+    console.log("✅ reCAPTCHA passed, sending email...");
+
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
@@ -45,7 +48,8 @@ export default async function handler(req, res) {
 
     res.status(200).json({ message: "Message sent successfully!" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to send message" });
+    console.error("❌ EMAIL ERROR:", error);
+    res.status(500).json({ message: error.message });
+
   }
 }

@@ -411,7 +411,8 @@
                         My journey started with simple walk and run cycles and
                         gradually evolved into
                         more advanced animations like parkour dance sequences. These projects made
-                        me better understand body mechanics, timing, and personality in animation, while also paying attention to details.
+                        me better understand body mechanics, timing, and personality in animation, while also paying
+                        attention to details.
                     </p>
 
                     <h3 class="text-3xl font-bold mt-6 mb-4"
@@ -419,11 +420,14 @@
                         <span class="gradient-text">What I Learned:</span>
                     </h3>
                     <ul style="text-align: justify; margin-bottom: 15px;">
-                        <li><strong>Rigging</strong> : learned how to create rigs, use and attach bones, controllers, and IK/FK setups.
+                        <li><strong>Rigging</strong> : learned how to create rigs, use and attach bones, controllers,
+                            and IK/FK setups.
                         </li>
-                        <li><strong>Movement mechanics</strong> : creating believable jumps, vaults, and rolls as well as idle, walk, run
+                        <li><strong>Movement mechanics</strong> : creating believable jumps, vaults, and rolls as well
+                            as idle, walk, run
                             and turn cycles with smooth transitions</li>
-                        <li><strong>Camera usage</strong> : positioning, tracking and creating smooth movements to make the render feel natural</li>
+                        <li><strong>Camera usage</strong> : positioning, tracking and creating smooth movements to make
+                            the render feel natural</li>
                         <li><strong>Animation Principles</strong> : applying timing, spacing, and flow across different
                             styles of motion.</li>
                     </ul>
@@ -435,7 +439,8 @@
                     <p style="text-align: justify; margin-bottom: 15px;">
                         These animations started simple but gave me an idea of what I should continue to focus on.
                         Working on these gave me a feel for how characters move and express themselves through motion.
-                        Best part was getting up from the chair and trying to mimic the movements myself to understand joint movement.
+                        Best part was getting up from the chair and trying to mimic the movements myself to understand
+                        joint movement.
 
                         Disclaimer: Some assets are original creations, while others belong to their respective owners.
                     </p>
@@ -491,13 +496,17 @@
                         Some of my own 3D environment designs and models created in Blender.
                     </p>
                     <ul style="text-align: justify; margin-bottom: 15px;">
-                        <li><strong>Greek Temple Ruin</strong> was my first ever project where I experimented with environment
-                        design.
-                        I modeled a classical-style temple, added surrounding details like trees, bushes, street lamps, vehicles and a
-                        path,
-                        and set it all against a nighttime backdrop. This project was my introduction to composition,
-                        lighting, and everything related to 3D really.</li>
-                        <li><strong>Snowday</strong></li> was a fun little project where I worked with the environment more 
+                        <li><strong>Greek Temple Ruin</strong> was my first ever project where I experimented with
+                            environment
+                            design.
+                            I modeled a classical-style temple, added surrounding details like trees, bushes, street
+                            lamps, vehicles and a
+                            path,
+                            and set it all against a nighttime backdrop. This project was my introduction to
+                            composition,
+                            lighting, and everything related to 3D really.</li>
+                        <li><strong>Snowday</strong></li> was a fun little project where I worked with the environment
+                        more
                         to create things like snow, water and mountains as well as a couple of snowed-on pine trees.
                     </ul>
                     </p>
@@ -507,11 +516,15 @@
                         <span class="gradient-text">What I Learned:</span>
                     </h3>
                     <ul style="text-align: justify; margin-bottom: 15px;">
-                        <li><strong>Modeling Basics</strong> : building architectural shapes like columns, stairs, arches and so on</li>
-                        <li><strong>Environment Composition</strong> : arranging and creating props such as trees, signs, bushes, 
+                        <li><strong>Modeling Basics</strong> : building architectural shapes like columns, stairs,
+                            arches and so on</li>
+                        <li><strong>Environment Composition</strong> : arranging and creating props such as trees,
+                            signs, bushes,
                             lamps, cars and more to make the scene feel alive.</li>
-                        <li><strong>Lighting and Atmosphere</strong> : experimenting with spot, area and world lighting according to the environment </li>
-                        <li><strong>Rendering</strong> : setting up camera angles, depth of field, and configuring render settings for the best quality.
+                        <li><strong>Lighting and Atmosphere</strong> : experimenting with spot, area and world lighting
+                            according to the environment </li>
+                        <li><strong>Rendering</strong> : setting up camera angles, depth of field, and configuring
+                            render settings for the best quality.
                         </li>
                     </ul>
 
@@ -520,10 +533,12 @@
                         <span class="gradient-text">Looking Back:</span>
                     </h3>
                     <p style="text-align: justify; margin-bottom: 15px;">
-                        These projects were a big milestone because they were my first attempts at creating a full environment
+                        These projects were a big milestone because they were my first attempts at creating a full
+                        environment
                         rather than a single object.
-                        As fun as it was to create everything, I underestimated how hard learning to render properly without it taking hours is.
-                        
+                        As fun as it was to create everything, I underestimated how hard learning to render properly
+                        without it taking hours is.
+
                     </p>
                 </div>
 
@@ -1005,10 +1020,21 @@
                 e.preventDefault();
 
                 const token = grecaptcha.getResponse();
+                const name = document.getElementById("name").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const project = document.getElementById("project").value.trim();
+                const message = document.getElementById("message").value.trim();
+
+                if (!name || !email || !project || !message) {
+                    alert("⚠️ Please fill in all fields before sending.");
+                    return;
+                }
+
                 if (!token) {
                     alert("Please complete the CAPTCHA.");
                     return;
                 }
+
 
                 const formData = {
                     name: document.getElementById("name").value,

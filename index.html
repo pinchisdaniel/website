@@ -963,10 +963,20 @@
                 container.addEventListener("touchmove", e => move(e.touches[0].clientX));
                 container.addEventListener("touchend", e => end(e.changedTouches[0].clientX));
 
+                // Mouse listeners (desktop drag)
+                container.addEventListener("mousedown", e => start(e.clientX));
+                container.addEventListener("mousemove", e => move(e.clientX));
+                container.addEventListener("mouseup", e => end(e.clientX));
+                container.addEventListener("mouseleave", e => end(e.clientX));
 
+                // Initial position
                 setPosition();
             });
         });
+
+
+
+
 
 
         // Mobile menu toggle

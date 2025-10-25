@@ -976,20 +976,65 @@
                 setPosition();
             });
 
-            // Native fullscreen for images (no overlay)
+            // Fullscreen + manual zoom for images
             document.querySelectorAll('.media-item img').forEach(img => {
                 img.style.cursor = 'zoom-in';
+
+                let scale = 1; // default zoom
+                let isFullscreen = false;
+
                 img.addEventListener('click', async () => {
                     try {
                         if (!document.fullscreenElement) {
                             await img.requestFullscreen();
                             img.style.cursor = 'zoom-out';
+                            isFullscreen = true;
                         } else {
                             await document.exitFullscreen();
                             img.style.cursor = 'zoom-in';
+                            isFullscreen = false;
+                            img.style.transform = 'scale(1)';
+                            scale = 1;
                         }
                     } catch (err) {
                         console.error('Fullscreen failed:', err);
+                    }
+                });
+
+                // Zoom with mouse wheel
+                img.addEventListener('wheel', e => {
+                    if (!isFullscreen) return;
+                    e.preventDefault();
+                    const zoomSpeed = 0.1;
+                    scale += e.deltaY < 0 ? zoomSpeed : -zoomSpeed;
+                    scale = Math.min(Math.max(scale, 1), 4); // limit zoom
+                    img.style.transform = `scale(${scale})`;
+                    img.style.transition = 'transform 0.1s ease-out';
+                });
+
+                // Drag to move image when zoomed
+                let isDragging = false;
+                let startX, startY, offsetX = 0, offsetY = 0;
+
+                img.addEventListener('mousedown', e => {
+                    if (scale <= 1) return;
+                    isDragging = true;
+                    startX = e.clientX - offsetX;
+                    startY = e.clientY - offsetY;
+                    img.style.cursor = 'grab';
+                });
+
+                window.addEventListener('mousemove', e => {
+                    if (!isDragging) return;
+                    offsetX = e.clientX - startX;
+                    offsetY = e.clientY - startY;
+                    img.style.transform = `scale(${scale}) translate(${offsetX / scale}px, ${offsetY / scale}px)`;
+                });
+
+                window.addEventListener('mouseup', () => {
+                    if (isDragging) {
+                        isDragging = false;
+                        img.style.cursor = 'zoom-out';
                     }
                 });
             });

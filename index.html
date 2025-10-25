@@ -506,11 +506,14 @@
                             composition,
                             lighting, and everything related to 3D really.</li>
                         <li><strong>Snowday</strong> was a fun little project where I worked with the environment
-                        more
-                        to create things like snow, water and mountains as well as a couple of snowed-on pine trees.</li>
-                        <li><strong>Hidden Ruins</strong> was my most recent project where I focused on setting the perfect
-                        scene for a fantasy sword made by myself using environmental props, lighting, realistic water,
-                        glowing magic circle and god rays shining on the sword</li>
+                            more
+                            to create things like snow, water and mountains as well as a couple of snowed-on pine trees.
+                        </li>
+                        <li><strong>Hidden Ruins</strong> was my most recent project where I focused on setting the
+                            perfect
+                            scene for a fantasy sword made by myself using environmental props, lighting, realistic
+                            water,
+                            glowing magic circle and god rays shining on the sword</li>
                     </ul>
                     </p>
 
@@ -972,6 +975,24 @@
                 // Initial position
                 setPosition();
             });
+
+            // Fullscreen image viewer
+            document.querySelectorAll('.media-item img').forEach(img => {
+                img.addEventListener('click', () => {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[9999]';
+                    overlay.innerHTML = `
+            <img src="${img.src}" class="max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl">
+            <button class="absolute top-6 right-6 text-white text-3xl hover:text-gray-300 transition">&times;</button>
+        `;
+                    document.body.appendChild(overlay);
+                    overlay.querySelector('button').addEventListener('click', () => overlay.remove());
+                    overlay.addEventListener('click', e => {
+                        if (e.target === overlay) overlay.remove();
+                    });
+                });
+            });
+
         });
 
 
